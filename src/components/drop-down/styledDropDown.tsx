@@ -24,7 +24,7 @@ export const DropDownContainer = styled.div`
 
 export const FormContainer = styled.form`
   position: relative;
-  margin: 30vh auto;
+  margin-top: 30vh;
 `;
 
 export const DropDownListContainer = styled.div`
