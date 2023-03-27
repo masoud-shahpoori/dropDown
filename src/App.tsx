@@ -23,7 +23,7 @@ function App() {
       <DropDown
         handleChange={handleChange}
         value={(value && data[value as string].value) || query || ""}
-        searchAble={true}
+        searchAble={false}
         getMore={getMore}
       >
         {isLoading && <Loader />}
