@@ -22,6 +22,11 @@ export const DropDownContainer = styled.div`
   margin: 0 auto;
 `;
 
+export const FormContainer = styled.form`
+  position: relative;
+  margin: 30vh auto;
+`;
+
 export const DropDownListContainer = styled.div`
   margin-top: 20px;
   border-radius: var(--radius-2);

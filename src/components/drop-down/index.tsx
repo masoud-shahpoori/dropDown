@@ -10,6 +10,7 @@ import {
   DropDownContainer,
   DropDownItem,
   DropDownListContainer,
+  FormContainer,
   InputContainer,
 } from "./styledDropDown";
 import { debounce } from "../../lib/services";
@@ -58,7 +59,7 @@ function DropDown({
   }, 400);
   return (
     <DropDownContext.Provider value={{ handleChange: handleChange }}>
-      <form
+      <FormContainer
         onSubmit={(e) => {
           e.preventDefault();
           getDataWithSubmit();
@@ -82,7 +83,7 @@ function DropDown({
           </InputContainer>
           {isOpen && <DropDownListContainer>{children}</DropDownListContainer>}
         </DropDownContainer>
-      </form>
+      </FormContainer>
     </DropDownContext.Provider>
   );
 }
