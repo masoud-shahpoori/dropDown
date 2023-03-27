@@ -1,28 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { HandleChangeType } from "../../components/drop-down";
 import { dataType } from "../../App";
+let count = 8;
 
-function useDropDown(): [keyof dataType | undefined, string, HandleChangeType] {
-  const [value, setValue] = useState<keyof dataType | undefined>();
-  const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    document.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") console.log("is enter");
-    });
-    return () => document.removeEventListener("keydown", () => {});
-  }, []);
-
-  const handleChange: HandleChangeType = (type, e) => {
-    if (type === "query") {
-      setValue(undefined);
-      setQuery(e as string);
-    } else {
-      setValue(e as any);
-      setQuery("");
-    }
+function useGetDropDownData(): [dataType, boolean, () => Promise<unknown>] {
+  const items: dataType = {
+    1: { value: "Kayaking", icon: "‍🚣🏻‍", id: 1 },
+    2: { value: "Art", icon: "🎷", id: 2 },
+    3: { value: "Sport", icon: "🏃🏻", id: 3 },
+    4: { value: "Science", icon: "👨🏻‍🏫", id: 4 },
+    5: { value: "Health", icon: "🏃🏻", id: 5 },
+    6: { value: "Education", icon: "🧑🏻‍🎓", id: 6 },
+    7: { value: "Tech", icon: "🧑🏻‍💻", id: 7 },
   };
-  return [value, query, handleChange];
+  const [data, setData] = useState<dataType>(items);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const generateData = useCallback(() => {
+    return () => {
+      return count++;
+    };
+  }, []);
+  const validateData = generateData();
+
+  const getMore = () => {
+    setIsLoading(true);
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        setIsLoading(false);
+        const newData: dataType = {};
+        Array.from(Array(10)).map(() => {
+          const counter = validateData();
+          const index = (Math.ceil(Math.random() * 23) * counter) % 7 || 1;
+          newData[counter] = {
+            value: items[index].value + counter,
+            icon: items[index].icon,
+            id: counter,
+          };
+        });
+        setData({ ...data, ...newData });
+      }, 500);
+      return resolve;
+    });
+  };
+
+  return [data, isLoading, getMore];
 }
 
-export default useDropDown;
+export default useGetDropDownData;
